@@ -1,0 +1,250 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout>
+    <div
+        class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50"
+    >
+        <div class="container mx-auto px-4 py-8">
+            <!-- Navigation améliorée -->
+            <nav
+                class="mb-8 bg-white/80 backdrop-blur-sm rounded-full px-6 py-3 shadow-lg"
+            >
+                <div class="flex items-center justify-between">
+                    <a
+                        href="/"
+                        class="text-blue-600 hover:text-blue-700 font-medium flex items-center gap-2"
+                    >
+                        <svg
+                            class="w-5 h-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                        </svg>
+                        Accueil
+                    </a>
+                    <div class="flex gap-4 text-sm">
+                        <a
+                            href="/simple"
+                            class="text-gray-600 hover:text-gray-900 transition-colors"
+                            >Simple</a
+                        >
+                        <a
+                            href="/simple-penguin"
+                            class="text-gray-600 hover:text-gray-900 transition-colors"
+                            >Penguin</a
+                        >
+                        <a
+                            href="/penguin-filter"
+                            class="text-gray-900 font-bold border-b-2 border-purple-600 pb-1"
+                            >Filtre</a
+                        >
+                        <a
+                            href="/penguin-multi-filter"
+                            class="text-gray-600 hover:text-gray-900 transition-colors"
+                            >Multi-filtres</a
+                        >
+                        <a
+                            href="/other-dataset"
+                            class="text-gray-600 hover:text-gray-900 transition-colors"
+                            >Iris</a
+                        >
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Header de la page -->
+            <div class="text-center mb-8">
+                <h1
+                    class="text-4xl font-bold mb-3 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent"
+                >
+                    Filtrage des Pingouins
+                </h1>
+                <p class="text-gray-600 max-w-2xl mx-auto">
+                    Explorez le dataset Palmer Penguins en filtrant par espèce.
+                    Observez comment les différentes espèces se distinguent par
+                    leurs caractéristiques physiques.
+                </p>
+            </div>
+
+            <!-- Container principal -->
+            <div class="max-w-5xl mx-auto">
+                <!-- Contrôles de filtrage -->
+                <div class="bg-white rounded-2xl shadow-xl p-6 mb-6">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-4">
+                            <div class="flex items-center gap-2">
+                                <div
+                                    class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center"
+                                >
+                                    <svg
+                                        class="w-5 h-5 text-purple-600"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                    >
+                                        <path
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            stroke-width="2"
+                                            d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
+                                        ></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <label
+                                        for="species"
+                                        class="block text-sm font-medium text-gray-700"
+                                        >Filtrer par espèce</label
+                                    >
+                                    <select
+                                        name="species"
+                                        id="species"
+                                        class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-purple-500 focus:border-purple-500 rounded-lg"
+                                    >
+                                        <option value=""
+                                            >Toutes les espèces</option
+                                        >
+                                        <option value="Adelie">🐧 Adelie</option
+                                        >
+                                        <option value="Chinstrap"
+                                            >🐧 Chinstrap</option
+                                        >
+                                        <option value="Gentoo">🐧 Gentoo</option
+                                        >
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="stats" class="text-right">
+                            <span class="text-sm text-gray-500"
+                                >Points affichés</span
+                            >
+                            <div
+                                class="text-2xl font-bold text-gray-900"
+                                id="count"
+                            >
+                                -
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Container du graphique -->
+                <div class="bg-white rounded-2xl shadow-xl p-8">
+                    <div id="plotContainer" class="flex justify-center"></div>
+                </div>
+
+                <!-- Légende des espèces -->
+                <div class="mt-6 grid grid-cols-3 gap-4">
+                    <div
+                        class="bg-white rounded-lg p-4 shadow-md border-l-4 border-orange-400"
+                    >
+                        <h3 class="font-semibold text-gray-900">Adelie</h3>
+                        <p class="text-sm text-gray-600 mt-1">
+                            Espèce la plus commune, taille moyenne
+                        </p>
+                    </div>
+                    <div
+                        class="bg-white rounded-lg p-4 shadow-md border-l-4 border-teal-400"
+                    >
+                        <h3 class="font-semibold text-gray-900">Chinstrap</h3>
+                        <p class="text-sm text-gray-600 mt-1">
+                            Bec plus long, profondeur moyenne
+                        </p>
+                    </div>
+                    <div
+                        class="bg-white rounded-lg p-4 shadow-md border-l-4 border-purple-400"
+                    >
+                        <h3 class="font-semibold text-gray-900">Gentoo</h3>
+                        <p class="text-sm text-gray-600 mt-1">
+                            Plus grande espèce, bec distinctif
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Importe la librairie Plot d'ObservableHQ
+        import * as Plot from "@observablehq/plot";
+        // Importe les données des manchots depuis un fichier JSON
+        import penguins from "../assets/penguins.json";
+
+        // Récupère l'élément select pour choisir l'espèce
+        const selectSpecies = document.querySelector("#species");
+        const countElement = document.querySelector("#count");
+
+        // Fonction pour afficher le graphique
+        function renderPlot() {
+            // Récupère l'espèce sélectionnée
+            const species = selectSpecies.value;
+
+            // Sélectionne la div où le graphique sera affiché
+            const container = document.querySelector("#plotContainer");
+            // Vide le contenu précédent de la div
+            container.innerHTML = "";
+
+            // Filtre les données selon l'espèce
+            const validData = penguins.filter(
+                (d) => d.culmen_length_mm !== null,
+            );
+            const filteredData = species
+                ? validData.filter((d) => d.species === species)
+                : validData;
+
+            // Met à jour le compteur
+            countElement.textContent = filteredData.length;
+
+            // Crée le graphique avec Plot
+            const plot = Plot.plot({
+                width: 800,
+                height: 500,
+                marks: [
+                    // Ajoute les points du graphique, filtrés selon l'espèce choisie
+                    Plot.dot(filteredData, {
+                        x: "culmen_length_mm", // Axe X : longueur du bec
+                        y: "culmen_depth_mm", // Axe Y : profondeur du bec
+                        stroke: "species", // Couleur selon l'espèce
+                        r: 4,
+                        opacity: 0.7,
+                        tip: true,
+                    }),
+                ],
+                grid: true,
+                x: {
+                    label: "Longueur du bec (mm) →",
+                    nice: true,
+                },
+                y: {
+                    label: "↑ Profondeur du bec (mm)",
+                    nice: true,
+                },
+                color: {
+                    legend: true,
+                    scheme: "Observable10",
+                },
+                style: {
+                    fontSize: "14px",
+                },
+            });
+
+            // Ajoute le graphique à la div
+            container.append(plot);
+        }
+
+        // Ajoute un écouteur d'événement pour le changement d'espèce (appel 'renderPlot')
+        selectSpecies.addEventListener("change", renderPlot);
+
+        // Affiche le graphique au chargement de la page
+        renderPlot();
+    </script>
+</Layout>
